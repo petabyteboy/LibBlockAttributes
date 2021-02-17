@@ -13,7 +13,7 @@ import java.util.Set;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.WaterCauldronBlock;
+import net.minecraft.block.LeveledCauldronBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
@@ -31,6 +31,9 @@ import alexiil.mc.lib.attributes.fluid.FluidContainerRegistry.FluidFillHandler;
 import alexiil.mc.lib.attributes.fluid.FluidVolumeUtil;
 import alexiil.mc.lib.attributes.fluid.GroupedFluidInv;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
+import alexiil.mc.lib.attributes.fluid.compat.mod.vanilla.VanillaFluidCompat.CauldronBlockInv;
+import alexiil.mc.lib.attributes.fluid.compat.mod.vanilla.VanillaFluidCompat.PotionBottleFillHandler;
+import alexiil.mc.lib.attributes.fluid.compat.mod.vanilla.VanillaFluidCompat.PotionItemInv;
 import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
 import alexiil.mc.lib.attributes.fluid.impl.GroupedFluidInvFixedWrapper;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
@@ -176,7 +179,7 @@ public final class VanillaFluidCompat {
         }
 
         private static boolean isValid(BlockState state) {
-            return state.getBlock() == Blocks.CAULDRON && state.contains(WaterCauldronBlock.LEVEL);
+            return state.getBlock() == Blocks.CAULDRON && state.contains(LeveledCauldronBlock.LEVEL);
         }
 
         @Override
@@ -189,7 +192,7 @@ public final class VanillaFluidCompat {
         public FluidVolume getInvFluid(int tank) {
             BlockState state = world.getBlockState(pos);
             if (isValid(state)) {
-                int level = state.get(WaterCauldronBlock.LEVEL);
+                int level = state.get(LeveledCauldronBlock.LEVEL);
                 return FluidKeys.WATER.withAmount(FluidAmount.of(level, 3));
             }
             return FluidVolumeUtil.EMPTY;
@@ -221,7 +224,7 @@ public final class VanillaFluidCompat {
                 }
 
                 if (simulation.isAction()) {
-                    world.setBlockState(pos, state.with(WaterCauldronBlock.LEVEL, level));
+                    world.setBlockState(pos, state.with(LeveledCauldronBlock.LEVEL, level));
                 }
             }
             return false;
@@ -239,7 +242,7 @@ public final class VanillaFluidCompat {
             if (!isValid(state)) {
                 return volume;
             }
-            int current = state.get(WaterCauldronBlock.LEVEL);
+            int current = state.get(LeveledCauldronBlock.LEVEL);
             int space = 3 - current;
             if (space <= 0) {
                 return volume;
@@ -250,7 +253,7 @@ public final class VanillaFluidCompat {
             int additional = Math.min(space, bottles);
             incomingFluid.split(FluidAmount.of(additional, 3));
             if (simulation.isAction()) {
-                world.setBlockState(pos, state.with(WaterCauldronBlock.LEVEL, current + additional));
+                world.setBlockState(pos, state.with(LeveledCauldronBlock.LEVEL, current + additional));
             }
             return incomingFluid;
         }
@@ -272,7 +275,7 @@ public final class VanillaFluidCompat {
             if (!isValid(state)) {
                 return mergeWith;
             }
-            int current = state.get(WaterCauldronBlock.LEVEL);
+            int current = state.get(LeveledCauldronBlock.LEVEL);
             if (current <= 0) {
                 return mergeWith;
             }
@@ -283,7 +286,7 @@ public final class VanillaFluidCompat {
             FluidVolume extracted = FluidKeys.WATER.withAmount(FluidAmount.of(extractedBottles, 3));
 
             if (simulation.isAction()) {
-                world.setBlockState(pos, state.with(WaterCauldronBlock.LEVEL, left));
+                world.setBlockState(pos, state.with(LeveledCauldronBlock.LEVEL, left));
             }
 
             if (mergeWith.isEmpty()) {

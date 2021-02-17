@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.4-SNAPSHOT'
+    id 'fabric-loom' version '0.6-SNAPSHOT'
     id 'net.minecrell.licenser' version '0.4.1'
 }
 
@@ -31,12 +31,12 @@ minecraft {
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:20w45a"
-    mappings "net.fabricmc:yarn:20w45a+build.31:v2"
-    modImplementation "net.fabricmc:fabric-loader:0.10.6+build.214"
+    minecraft "com.mojang:minecraft:21w06a"
+    mappings "net.fabricmc:yarn:21w06a+build.21:v2"
+    modImplementation "net.fabricmc:fabric-loader:0.11.1"
 
     //Fabric api
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.25.5+1.17"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.30.4+1.17"
 
     // Silk API
     modImplementation("io.github.prospector.silk:SilkAPI:${silk_version}") { transitive = false }
